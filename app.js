@@ -2,6 +2,7 @@ const express = require('express')
 const resExtra = require('./modules/resExtra')
 const path = require('path')
 const mount = require('mount-routes')
+const sys_passport = require('./modules/passport')
 
 const app = express()
 app.use(resExtra)
@@ -13,6 +14,9 @@ app.get('/', (req, res) => {
   // res.send('welcome')
   res.sendResult('welcome', 200, '获取成功')
 })
+
+// Token 验证，仅作为测试，后续将作为中间件挂载到其它路由上
+app.get('/auth', sys_passport.tokenAuth)
 
 // 未匹配到路由
 app.use((req, res, next) => {
