@@ -6,8 +6,8 @@ const jwt_config = require('config').get('jwt_config')
 // Token 验证策略
 passport.use(new BearerStrategy(
   function (token, done) {
-    const tokenG = jwt.sign({ 'uid': 'chen', "rid": 'chen' }, jwt_config.get('secretKey'), { "expiresIn": jwt_config.get('expiresIn') })
-    const userToken = "Bearer" + tokenG;
+    const tokenGenerated = jwt.sign({ 'uid': 'chen', "rid": 'chen' }, jwt_config.get('secretKey'), { "expiresIn": jwt_config.get('expiresIn') })
+    const userToken = "Bearer" + tokenGenerated;
     console.log('userToken', userToken);
 
 
