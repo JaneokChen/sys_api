@@ -10,7 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "config": "^5.0.1",
     "express": "4.17.2",
-    "mount-routes": "^1.0.8"
+    "jsonwebtoken": "^9.0.3",
+    "mount-routes": "^1.0.8",
+    "passport": "^0.7.0",
+    "passport-http-bearer": "^1.0.1"
   }
 }

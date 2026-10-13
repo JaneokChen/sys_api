@@ -1,14 +1,25 @@
+const passport = require('passport')
 const BearerStrategy = require('passport-http-bearer').Strategy
+const jwt = require('jsonwebtoken')
+const jwt_config = require('config').get('jwt_config')
 
 // Token 验证策略
 passport.use(new BearerStrategy(
-  function (token, donw) {
-    // 先写死，设置为登录接口相同的 Token
-    if (token === 'aaa') {
-      return done(null, '取得用户信息')
-    } else {
-      return done('token 验证错误')
-    }
+  function (token, done) {
+    const tokenG = jwt.sign({ 'uid': 'chen', "rid": 'chen' }, jwt_config.get('secretKey'), { "expiresIn": jwt_config.get('expiresIn') })
+    const userToken = "Bearer" + tokenG;
+    console.log('userToken', userToken);
+
+
+    jwt.verify(token, jwt_config.get('secretKey'), function (err, decode) {
+      if (err) { return done('token 验证错误') }
+      return done(null, decode)
+    })
+    // if (token === 'aaa') {
+    //   return done(null, '取得用户信息')
+    // } else {
+    //   return done('token 验证错误')
+    // }
   }
 ))
 

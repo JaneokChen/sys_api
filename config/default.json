@@ -1,0 +1,7 @@
+{
+  "config_name": "develop",
+  "jwt_config": {
+    "secretKey": "chen",
+    "expiresIn": 86400
+  }
+}
