@@ -10,11 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^2.3.0",
     "config": "^5.0.1",
     "express": "4.17.2",
     "jsonwebtoken": "^9.0.3",
     "mount-routes": "^1.0.8",
     "passport": "^0.7.0",
-    "passport-http-bearer": "^1.0.1"
+    "passport-http-bearer": "^1.0.1",
+    "passport-local": "^1.0.0"
   }
 }
