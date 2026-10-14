@@ -1,4 +1,4 @@
-require('mysql') // 为 ORM 提供驱动
+require('mysql2') // 为 ORM 提供驱动
 const orm = require('orm')
 const path = require('path')
 const fs = require('fs')
@@ -30,7 +30,7 @@ function init(app, callback) {
       const loadModelAsyncFns = new Array() // 存放所有的加载模型函数
       fs.readdir(modelsPath, function (err, files) {
         for (let i = 0; i < files.length; i++) {
-          const modelPath = modelPath + '/' + files[i]
+          const modelPath = modelsPath + '/' + files[i]
           loadModelAsyncFns[i] = db.loadAsync(modelPath)
         }
       })

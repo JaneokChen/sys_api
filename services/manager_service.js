@@ -1,25 +1,50 @@
+const path = require('path')
+const managerDao = require(path.join(process.cwd(), 'dao/manager_dao'))
+
 // 管理员登录 
-module.exports.login = function (username, passport, cb) {
-  // 暂时写死作为演示，后续从数据库中读取
-  const tempuser = {
-    username: '123',
-    password: '123'
-  }
+module.exports.login = function (username, password, cb) {
+  // // 暂时写死作为演示，后续从数据库中读取
+  // const tempuser = {
+  //   username: '123',
+  //   password: '123'
+  // }
 
-  if (username !== tempuser.username) {
-    return cb('用户名不存在')
-  }
+  // if (username !== tempuser.username) {
+  //   return cb('用户名不存在')
+  // }
 
-  if (username !== tempuser.password) {
-    return cb('密码不正确')
-  }
+  // if (username !== tempuser.password) {
+  //   return cb('密码不正确')
+  // }
 
-  // 模拟从数据库查询中返回用户信息
-  const user = {
-    username: '123',
-    id: 0,
-    rid: 1
-  }
+  // // 模拟从数据库查询中返回用户信息
+  // const user = {
+  //   username: '123',
+  //   id: 0,
+  //   rid: 1
+  // }
 
-  return cb(null, user)
+  // return cb(null, user)
+
+  console.log('用户名：%s，密码：%s', username, password)
+  managerDao.findOne({ 'mg_name': username }, function (err, manager) {
+    if (err || !manager) return cb('用户名不存在')
+    if (manager.role_id < 0) {
+      return cb('该用户没有权限')
+    }
+    if (manager.role_id != 0 && manager.mg_state != 1) {
+      return cb('该用户已经被禁用')
+    }
+    if (password === manager.mg_pwd) {
+      cb(null, {
+        "id": manager.mg_id,
+        "rid": manager.role_id,
+        'username': manager.mg_name,
+        "mobile": manager.mg_mobile,
+        "emial": manager.mg_email
+      })
+    } else {
+      return cb('密码错误')
+    }
+  })
 }
