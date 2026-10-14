@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const path = require('path')
 const managerDao = require(path.join(process.cwd(), 'dao/manager_dao'))
 
@@ -23,10 +24,14 @@ module.exports.login = function (username, password, cb) {
   //   id: 0,
   //   rid: 1
   // }
-
   // return cb(null, user)
 
   console.log('用户名：%s，密码：%s', username, password)
+
+  // 手动加密密码
+  // const hashedPassword = bcrypt.hashSync(password, 10);
+  // console.log("🚀 ~ hashedPassword:", hashedPassword)
+
   managerDao.findOne({ 'mg_name': username }, function (err, manager) {
     if (err || !manager) return cb('用户名不存在')
     if (manager.role_id < 0) {
@@ -35,7 +40,8 @@ module.exports.login = function (username, password, cb) {
     if (manager.role_id != 0 && manager.mg_state != 1) {
       return cb('该用户已经被禁用')
     }
-    if (password === manager.mg_pwd) {
+
+    if (bcrypt.compareSync(password, manager.mg_pwd)) {
       cb(null, {
         "id": manager.mg_id,
         "rid": manager.role_id,
