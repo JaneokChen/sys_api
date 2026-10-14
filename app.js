@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 
 const sys_passport = require('./modules/passport')
 const managerService = require(path.join(process.cwd(), 'services/manager_service')) // 获取管理员逻辑模块
+const database = require('./modules/db')
 
 const app = express()
 app.use(resExtra)
@@ -14,6 +15,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/sysapi/login', sys_passport.login)
 app.use('/sysapi/*', sys_passport.tokenAuth)
 
+database.init(app, function (err) {
+  if (err) {
+    console.error('连接数据库失败 %s', err)
+  }
+})
 
 sys_passport.setup(app, managerService.login)
 
