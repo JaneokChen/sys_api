@@ -5,15 +5,9 @@ const authorization = require(path.join(process.cwd(), '/modules/authorization')
 
 // 通过验证模块获取分类管理
 const categoryService = authorization.getService('category_service')
-console.log("🚀 ~ categoryService:", categoryService)
 
 // 创建路由对象
 const router = express.Router()
-
-// router.get('/', (req, res) => {
-//   res.sendResult('获取商品分类', 200, 'success')
-// })
-
 
 // 获取分类列表接口
 router.get("/",
