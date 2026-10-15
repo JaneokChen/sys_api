@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const path = require('path')
 const managerDao = require(path.join(process.cwd(), 'dao/manager_dao'))
+const logger = require('../modules/logger').logger()
 
 // 管理员登录 
 module.exports.login = function (username, password, cb) {
@@ -27,6 +28,7 @@ module.exports.login = function (username, password, cb) {
   // return cb(null, user)
 
   console.log('用户名：%s，密码：%s', username, password)
+  logger.debug('login -> username: %s, password:%s', username, password)
 
   // 手动加密密码
   // const hashedPassword = bcrypt.hashSync(password, 10);

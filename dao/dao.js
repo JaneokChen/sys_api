@@ -1,7 +1,6 @@
 const path = require('path')
-
-// 获取数据库模型
-const databaseModule = require(path.join(process.cwd(), 'modules/db'))
+const databaseModule = require(path.join(process.cwd(), 'modules/db')) // 获取数据库模型
+const logger = require('../modules/logger').logger()
 
 /** 获取一条数据 
  * @param {String} modelName 模型名称
@@ -16,6 +15,7 @@ module.exports.findOne = function (modelName, conditions, cb) {
   model.one(conditions, function (err, obj) {
     console.log(err)
     if (err) {
+      logger.debug(err)
       return cb('查询失败', null)
     }
     return cb(null, obj)
