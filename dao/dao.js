@@ -21,3 +21,42 @@ module.exports.findOne = function (modelName, conditions, cb) {
     return cb(null, obj)
   })
 }
+
+module.exports.list = function (modelName, conditions, cb) {
+  var db = databaseModule.getDatabase();
+  var model = db.models[modelName];
+  if (!model) return cb("模型不存在", null)
+  if (conditions) {
+    // console.log(444444444444444)
+    if (conditions["columns"]) {
+      model = model.find(conditions["columns"])
+    } else {
+      model = model.find();
+    }
+    if (conditions["offset"]) {
+      model = model.offset(parseInt(conditions["offset"]))
+    }
+    if (conditions["limit"]) {
+      model = model.limit(parseInt(conditions["limit"]))
+    }
+    if (conditions["only"]) {
+      model = model.only(conditions["only"]);
+    }
+    if (conditions["omit"]) {
+      model = model.omit(conditions["omit"]);
+    }
+    if (conditions["order"]) {
+      model = model.order(conditions["order"]);
+    }
+
+  } else {
+    model = model.find();
+  }
+
+  model.run(function (err, models) {
+    if (err) {
+      return cb("查询失败", null)
+    }
+    cb(null, models)
+  })
+}
