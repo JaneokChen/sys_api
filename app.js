@@ -6,6 +6,8 @@ const bodyParser = require('body-parser')
 
 const sys_passport = require('./modules/passport')
 const managerService = require(path.join(process.cwd(), 'services/manager_service')) // 获取管理员逻辑模块
+const roleService = require(path.join(process.cwd(), 'services/role_service'))
+const authorization = require(path.join(process.cwd(), '/modules/authorization'))
 const database = require('./modules/db')
 
 const app = express()
@@ -22,6 +24,15 @@ database.init(app, function (err) {
 })
 
 sys_passport.setup(app, managerService.login)
+
+// 设置全局权限
+authorization.setAuthFn(function (passFn) {
+  // 验证权限
+  const roleId = 0 // TODO: 外界传入
+  roleService.authRight(roleId, function (err, pass) {
+    passFn(pass)
+  })
+})
 
 // 初始化路由（mount 函数中的第 3 个参数为 true，表示在控制台打印接口信息）
 mount(app, path.join(process.cwd(), '/routes'), true)   // 找到“当前运行 Node 命令所在目录”下的 routes 文件夹，并加载里面的路由
