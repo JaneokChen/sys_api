@@ -1,3 +1,6 @@
 [2026-10-15T08:05:37.315] [DEBUG] cheese - login => username: admin,password:123456
 [2026-10-17T09:53:51.673] [DEBUG] cheese - login -> username: admin, password:123456
 [2026-10-17T09:54:20.139] [DEBUG] cheese - login -> username: admin, password:123456
+[2026-10-17T12:11:46.793] [DEBUG] cheese - login -> username: operator, password:123456
+[2026-10-17T12:12:16.634] [DEBUG] cheese - login -> username: operator, password:123456
+[2026-10-17T12:12:17.105] [DEBUG] cheese - login -> username: operator, password:123456
