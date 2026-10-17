@@ -34,7 +34,7 @@ module.exports.getService = function (serviceName) {
       const origFunc = serviceModule[actionName]
       // todo: 根据角色权限拦截方法
       // global.service_caches[serviceName][actionName] = origFunc;
-      global.service_caches[serviceName][actionName] = Invocation(serviceName, serviceModule, origFunc)
+      global.service_caches[serviceName][actionName] = Invocation(serviceName, actionName, serviceModule, origFunc)
       console.log('action -> %s', actionName)
     }
   }
@@ -49,12 +49,12 @@ module.exports.getService = function (serviceName) {
  * @param serviveModule 服务模块
  * @param origFunc 原始方法
  */
-function Invocation(serviceName, serviceModule, origFunc) {
+function Invocation(serviceName, actionName, serviceModule, origFunc) {
   return function () {
     const origArguments = arguments
     return function (req, res) {
       if (global.service_auth_fn) {
-        global.service_auth_fn(function (pass) {
+        global.service_auth_fn(req, res, serviceName, actionName, function (pass) {
           if (pass) {
             origFunc.apply(serviceModule, origArguments)
           } else {

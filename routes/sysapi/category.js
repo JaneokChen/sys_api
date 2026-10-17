@@ -31,4 +31,25 @@ router.get("/",
   }
 )
 
+// 删除分类
+router.delete("/:id",
+  // 参数校验
+  function (req, res, next) {
+    if (!req.params.id) {
+      return res.sendResult(null, 400, "分类id不能为空")
+    }
+    if (isNaN(parseInt(req.params.id))) {
+      return res.sendResult(null, 400, "分类id必须是数字")
+    }
+    next();
+  },
+  // 业务逻辑
+  function (req, res, next) {
+    categoryService.deleteCategory(req.params.id, function (err, msg) {
+      if (err) return res.sendResult(null, 400, err)
+      res.sendResult(null, 200, msg)
+    })(req, res)
+  }
+)
+
 module.exports = router

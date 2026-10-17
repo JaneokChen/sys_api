@@ -64,6 +64,10 @@ module.exports.tokenAuth = function (req, res, next) {
       if (err) return res.sendResult(null, 400, '无效 token')
       if (!tokenData) return res.sendResult(null, 400, '无效 token')
 
+      req.userInfo = {}
+      req.userInfo.uid = tokenData['uid']
+      req.userInfo.rid = tokenData['rid']
+
       next()
       // 返回仅仅是为了测试， 其它接口验证要放行
       // return res.sendResult(tokenData, 200, 'success')

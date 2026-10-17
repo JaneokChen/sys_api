@@ -26,12 +26,19 @@ database.init(app, function (err) {
 sys_passport.setup(app, managerService.login)
 
 // 设置全局权限
-authorization.setAuthFn(function (passFn) {
+authorization.setAuthFn(function (req, res, serviceName, actionName, passFn) {
+  if (!req.usreInfo || Number.isNaN(parseInt(req.userInfo.rid))) {
+    return res.sendResult('无角色 ID 分配')
+  }
+
   // 验证权限
-  const roleId = 0 // TODO: 外界传入
-  roleService.authRight(roleId, function (err, pass) {
+  roleService.authRight(req.userInfo.rid, serviceName, actionName, function (err, pass) {
     passFn(pass)
   })
+  // const roleId = 0 // TODO: 外界传入
+  // roleService.authRight(roleId, function (err, pass) {
+  //   passFn(pass)
+  // })
 })
 
 // 初始化路由（mount 函数中的第 3 个参数为 true，表示在控制台打印接口信息）
