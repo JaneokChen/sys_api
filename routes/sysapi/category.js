@@ -27,7 +27,7 @@ router.get("/",
       function (err, result) {
         if (err) return res.sendResult(null, 400, "获取分类列表失败")
         res.sendResult(result, 200, "获取成功")
-      })
+      })(req, res)
   }
 )
 

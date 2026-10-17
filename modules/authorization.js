@@ -52,17 +52,19 @@ module.exports.getService = function (serviceName) {
 function Invocation(serviceName, serviceModule, origFunc) {
   return function () {
     const origArguments = arguments
-    if (global.service_auth_fn) {
-      global.service_auth_fn(function (pass) {
-        if (pass) {
-          origFunc.apply(serviceModule, origArguments)
-        } else {
-          // TODO: 使用 res 对象返回数据
-          console.log('无权限')
-        }
-      })
-    } else {
-      console.log('未设置权限验证函数')
+    return function (req, res) {
+      if (global.service_auth_fn) {
+        global.service_auth_fn(function (pass) {
+          if (pass) {
+            origFunc.apply(serviceModule, origArguments)
+          } else {
+            res.sendResult(null, 401, '权限验证失败')
+            // console.log('无权限')
+          }
+        })
+      } else {
+        console.log('未设置权限验证函数')
+      }
     }
   }
 }
